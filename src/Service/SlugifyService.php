@@ -32,5 +32,4 @@ class SlugifyService
 
         return $text;
     }
-
 }

@@ -4,6 +4,9 @@ namespace App\Service;
 
 class FileManagerService
 {
+    /**
+     * @return array<string>
+     */
     public function getMarkdownFiles(string $directory): array
     {
         $files = scandir($directory);
@@ -19,7 +22,7 @@ class FileManagerService
 
     public function writeOutput(string $filename, string $htmlDirectory, string $contents): void
     {
-        file_put_contents($htmlDirectory.$filename, $contents);
+        file_put_contents($htmlDirectory . $filename, $contents);
     }
 
     public function openFile(string $filename): string

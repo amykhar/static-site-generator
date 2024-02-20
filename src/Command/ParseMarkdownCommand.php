@@ -11,9 +11,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'parse-markdown', description: 'Convert markdown to html and save it to a file', )]
+#[AsCommand(name: 'parse-markdown', description: 'Convert markdown to html and save it to a file',)]
 class ParseMarkdownCommand extends Command
 {
+    /**
+     * @var array<string, string>
+     */
     private array $metadata;
 
     public function __construct(
@@ -34,13 +37,11 @@ class ParseMarkdownCommand extends Command
         $markdownFiles = $this->fileManagerService->getMarkdownFiles($this->markdownDirectory);
         foreach ($markdownFiles as $file) {
             $slug = str_replace('-md', '', $this->slugifyService->slugify($file));
-            $fileContents = $this->fileManagerService->openFile($this->markdownDirectory.$file);
+            $fileContents = $this->fileManagerService->openFile($this->markdownDirectory . $file);
             $markdown = $this->parseMetadata($fileContents);
             $html = $this->markdownParser->parse($markdown, $this->assetsInputDirectory, $this->assetsOutputDirectory);
             $output = $this->prepareOutput($html);
-
-
-            $this->fileManagerService->writeOutput($slug.'.html', $this->htmlDirectory, $output);
+            $this->fileManagerService->writeOutput($slug . '.html', $this->htmlDirectory, $output);
         }
 
         $io->success('All markdown files have been parsed and saved as html files.');
@@ -51,7 +52,7 @@ class ParseMarkdownCommand extends Command
     private function prepareOutput(string $contents): string
     {
         $rootDir = getcwd();
-        $output = $this->fileManagerService->openFile($rootDir.'/templates/output_template.html');
+        $output = $this->fileManagerService->openFile($rootDir . '/templates/output_template.html');
         $output = str_replace('BODY_GOES_HERE', $contents, $output);
 
         return $this->setTitle($output);

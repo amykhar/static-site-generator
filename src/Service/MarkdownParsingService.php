@@ -34,7 +34,7 @@ class MarkdownParsingService
     {
         $pattern = '/\n{2}(.+)\n{2}/';
         $this->output = preg_replace_callback($pattern, function ($matches) {
-            return "<section>\n".trim($matches[1])."\n</section>";
+            return "<section>\n" . trim($matches[1]) . "\n</section>";
         }, $this->output);
 
         return $this;
@@ -45,9 +45,9 @@ class MarkdownParsingService
         $pattern = '/\[\[(.+)]]/';
 
         $this->output = preg_replace_callback($pattern, function ($matches) {
-            $filename = $this->slugifyService->slugify($matches[1]).'.html';
+            $filename = $this->slugifyService->slugify($matches[1]) . '.html';
 
-            return '<a href="'.$filename.'">'.$matches[1].'</a>';
+            return '<a href="' . $filename . '">' . $matches[1] . '</a>';
         }, $this->output);
 
         return $this;
@@ -61,7 +61,7 @@ class MarkdownParsingService
             $level = strlen($matches[1]);
             $content = $matches[2];
 
-            return '<h'.$level.'>'.$content.'</h'.$level.'>';
+            return '<h' . $level . '>' . $content . '</h' . $level . '>';
         }, $this->output);
 
         return $this;
@@ -72,10 +72,11 @@ class MarkdownParsingService
         $pattern = '/>\[!sidenote]\n(>.+\n)+/';
 
         $this->output = preg_replace_callback($pattern, function ($matches) {
-            $for = 'sidenote-'.$this->sideNoteCount++;
-            $label = '<label class="margin-toggle sidenote-number" for="'.$for.'"></label>';
+            $for = 'sidenote-' . $this->sideNoteCount++;
+            $label = '<label class="margin-toggle sidenote-number" for="' . $for . '"></label>';
 
-            return $label.'<input type="checkbox" class="margin-toggle" id="'.$for.'" /><span class="sidenote">'.str_replace('>', '', $matches[1]).'</span>';
+            return $label . '<input type="checkbox" class="margin-toggle" id="' .
+                $for . '" /><span class="sidenote">' . str_replace('>', '', $matches[1]) . '</span>';
         }, $this->output);
 
         return $this;
@@ -97,10 +98,10 @@ class MarkdownParsingService
             }
             $quote = "<div class='epigraph'>";
             $quote .= '<blockquote>';
-            $quote .= '<p>'.$content.'</p>';
+            $quote .= '<p>' . $content . '</p>';
             if ($attribution) {
                 $quote .= '<footer>';
-                $quote .= $attribution.'</footnote>';
+                $quote .= $attribution . '</footnote>';
             }
             $quote .= '</blockquote></div>';
 
@@ -115,7 +116,7 @@ class MarkdownParsingService
         $pattern = '/--(.+?)--/';
 
         $this->output = preg_replace_callback($pattern, function ($matches) {
-            return '<span class="newthought">'.$matches[1].'</span>';
+            return '<span class="newthought">' . $matches[1] . '</span>';
         }, $this->output);
 
         return $this;
@@ -125,7 +126,7 @@ class MarkdownParsingService
     {
         $pattern = '/\n(.+)/';
         $this->output = preg_replace_callback($pattern, function ($matches) {
-            return '<p>'.trim($matches[1]).'</p>';
+            return '<p>' . trim($matches[1]) . '</p>';
         }, $this->output);
 
         return $this;
@@ -135,13 +136,17 @@ class MarkdownParsingService
     {
         $pattern = '/!\[\[(.+)]]/';
 
-        $this->output = preg_replace_callback($pattern, function ($matches) use ($assetsInputDirectory, $assetsOutputDirectory) {
-            $srcFileName = $assetsInputDirectory.$matches[1];
-            $dstFileName = $assetsOutputDirectory.$matches[1];
-            $this->fileManagerService->copyFile($srcFileName, $dstFileName);
+        $this->output = preg_replace_callback(
+            $pattern,
+            function ($matches) use ($assetsInputDirectory, $assetsOutputDirectory) {
+                $srcFileName = $assetsInputDirectory . $matches[1];
+                $dstFileName = $assetsOutputDirectory . $matches[1];
+                $this->fileManagerService->copyFile($srcFileName, $dstFileName);
 
-            return '<figure><img src="/assets/images/'.$matches[1].'"></figure>';
-        }, $this->output);
+                return '<figure><img src="/assets/images/' . $matches[1] . '"></figure>';
+            },
+            $this->output
+        );
 
         return $this;
     }
