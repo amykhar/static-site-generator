@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Exception\MissingMetadataException;
 use App\Service\FileManagerService;
 use App\Service\MarkdownParsingService;
 use App\Service\SlugifyService;
@@ -61,6 +62,10 @@ class ParseMarkdownCommand extends Command
     private function parseMetadata(string $contents): string
     {
         $contentArray = explode('---', $contents);
+        if (!isset($contentArray[1])) {
+            throw new MissingMetadataException();
+        }
+
         $metadataLines = explode("\n", $contentArray[1]);
         foreach ($metadataLines as $line) {
             $line = trim($line);
