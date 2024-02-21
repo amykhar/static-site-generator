@@ -22,6 +22,7 @@
         "symfony/css-selector": "7.0.*",
         "symfony/maker-bundle": "^1.54",
         "symfony/phpunit-bridge": "^7.0",
+        "symfony/var-dumper": "7.0.*",
         "zenstruck/foundry": "^1.36"
     },
     "config": {
