@@ -8,8 +8,8 @@ class MarkdownParsingService
     private string $output = '';
 
     public function __construct(
-        private SlugifyService $slugifyService,
-        private FileManagerService $fileManagerService
+        private readonly SlugifyService $slugifyService,
+        private readonly FileManagerService $fileManagerService
     ) {
     }
 
@@ -87,8 +87,9 @@ class MarkdownParsingService
     private function parseQuotes(): self
     {
         $pattern = '/>(\[!quote]\n)(>.+\n)+/';
-        $footerPattern = '/\((\w+|\s+)+\)/';
-        $this->output = preg_replace_callback($pattern, function ($matches) use ($footerPattern) {
+
+        $this->output = preg_replace_callback($pattern, function ($matches) {
+            $footerPattern = '/\((\w+|\s+)+\)/';
             $content = str_replace('>', '', $matches[0]);
             $content = str_replace('[!quote]', '', $content);
             preg_match($footerPattern, $content, $contents);
@@ -145,7 +146,7 @@ class MarkdownParsingService
                 $dstFileName = $assetsOutputDirectory . $matches[1];
                 $this->fileManagerService->copyFile($srcFileName, $dstFileName);
 
-                return '<figure><img src="/assets/images/' . $matches[1] . '"></figure>';
+                return '<figure><img alt="Todo" src="/assets/images/' . $matches[1] . '"></figure>';
             },
             $this->output
         );
@@ -153,11 +154,9 @@ class MarkdownParsingService
         return $this;
     }
 
-    private function stripEmpty(): self
+    private function stripEmpty(): void
     {
         $this->output = str_replace('<p></p>', '', $this->output);
-
-        return $this;
     }
 
     private function parseBold(): self
