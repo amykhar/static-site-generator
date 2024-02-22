@@ -1,6 +1,8 @@
 {
+    "name": "amykhar/static-site-generator",
+    "description": "A personal tool to convert Markdown files from my Obsidian vault into a static site.",
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
