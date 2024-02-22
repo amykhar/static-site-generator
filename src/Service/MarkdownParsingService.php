@@ -19,6 +19,7 @@ class MarkdownParsingService
         $this->parseSections()
             ->parseImages($assetsInputDirectory, $assetsOutputDirectory)
             ->parseInternalLinks()
+            ->parseExternalLinks()
             ->parseBold()
             ->parseItalics()
             ->parseHeaders()
@@ -50,6 +51,17 @@ class MarkdownParsingService
             $filename = $this->slugifyService->slugify($matches[1]) . '.html';
 
             return '<a href="' . $filename . '">' . $matches[1] . '</a>';
+        }, $this->output);
+
+        return $this;
+    }
+
+    private function parseExternalLinks(): self
+    {
+        $pattern = '/\[(.+)\]\((http.+)\)/';
+
+        $this->output = preg_replace_callback($pattern, function ($matches) {
+            return '<a href="' . $matches[2] . '">' . $matches[1] . '</a>';
         }, $this->output);
 
         return $this;
