@@ -22,8 +22,6 @@ class ParseMarkdownCommandTest extends KernelTestCase
     use ProphecyTrait;
 
     private CommandTester $commandTester;
-
-    /** @var ObjectProphecy<SlugifyService> */
     private ObjectProphecy $slugifyService;
 
     protected function setUp(): void

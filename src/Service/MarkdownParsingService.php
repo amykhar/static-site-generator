@@ -19,6 +19,8 @@ class MarkdownParsingService
         $this->parseSections()
             ->parseImages($assetsInputDirectory, $assetsOutputDirectory)
             ->parseInternalLinks()
+            ->parseBold()
+            ->parseItalics()
             ->parseHeaders()
             ->parseSideNotes()
             ->parseQuotes()
@@ -154,6 +156,26 @@ class MarkdownParsingService
     private function stripEmpty(): self
     {
         $this->output = str_replace('<p></p>', '', $this->output);
+
+        return $this;
+    }
+
+    private function parseBold(): self
+    {
+        $pattern = '/\*\*(.+)\*\*/';
+        $this->output = preg_replace_callback($pattern, function ($matches) {
+            return '<strong>' . $matches[1] . '</strong>';
+        }, $this->output);
+
+        return $this;
+    }
+
+    public function parseItalics(): self
+    {
+        $pattern = '/\*(.+)\*/';
+        $this->output = preg_replace_callback($pattern, function ($matches) {
+            return '<em>' . $matches[1] . '</em>';
+        }, $this->output);
 
         return $this;
     }

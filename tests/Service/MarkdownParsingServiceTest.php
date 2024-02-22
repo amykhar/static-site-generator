@@ -78,6 +78,34 @@ class MarkdownParsingServiceTest extends KernelTestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testParseBold(): void
+    {
+        $markdown = '**bold**';
+        $expected = '<strong>bold</strong>';
+        $this->assertEquals(
+            $expected,
+            $this->markdownParsingService->parse(
+                $markdown,
+                $this->assetsInputDirectory,
+                $this->assetsOutputDirectory
+            )
+        );
+    }
+
+    public function testParseItalic(): void
+    {
+        $markdown = '*italics*';
+        $expected = '<em>italics</em>';
+        $this->assertEquals(
+            $expected,
+            $this->markdownParsingService->parse(
+                $markdown,
+                $this->assetsInputDirectory,
+                $this->assetsOutputDirectory
+            )
+        );
+    }
+
     private function readFixture(string $filename): string
     {
         return file_get_contents(
