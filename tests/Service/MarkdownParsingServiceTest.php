@@ -106,6 +106,20 @@ class MarkdownParsingServiceTest extends KernelTestCase
         );
     }
 
+    public function testParseExternalLinks(): void
+    {
+        $markdown = '[Kagi](https://kagi.com)';
+        $expected = '<a href="https://kagi.com">Kagi</a>';
+        $this->assertEquals(
+            $expected,
+            $this->markdownParsingService->parse(
+                $markdown,
+                $this->assetsInputDirectory,
+                $this->assetsOutputDirectory
+            )
+        );
+    }
+
     private function readFixture(string $filename): string
     {
         return file_get_contents(
