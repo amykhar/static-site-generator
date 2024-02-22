@@ -6,8 +6,10 @@ use Exception;
 
 class MissingMetadataException extends Exception
 {
-    public function __construct(string $message = 'The metadata is missing from the file')
+    private const MESSAGE = 'The metadata is missing from the file.';
+    public function __construct(string $message)
     {
+        $message = self::MESSAGE . ' ' . $message;
         parent::__construct($message);
     }
 }

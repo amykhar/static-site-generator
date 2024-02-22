@@ -19,6 +19,7 @@ class ParseMarkdownCommand extends Command
      * @var array<string, string>
      */
     private array $metadata;
+    private ?string $currentFileName = null;
 
     public function __construct(
         private readonly string $markdownDirectory,
@@ -37,6 +38,7 @@ class ParseMarkdownCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $markdownFiles = $this->fileManagerService->getMarkdownFiles($this->markdownDirectory);
         foreach ($markdownFiles as $file) {
+            $this->currentFileName = $file;
             $slug = str_replace('-md', '', $this->slugifyService->slugify($file));
             $fileContents = $this->fileManagerService->openFile($this->markdownDirectory . $file);
             $markdown = $this->parseMetadata($fileContents);
@@ -63,7 +65,7 @@ class ParseMarkdownCommand extends Command
     {
         $contentArray = explode('---', $contents);
         if (!isset($contentArray[1])) {
-            throw new MissingMetadataException();
+            throw new MissingMetadataException($this->currentFileName);
         }
 
         $metadataLines = explode("\n", $contentArray[1]);
