@@ -1,4 +1,5 @@
 # A Static Site Generator for my Obsidian Vault
+**February 22, 2024**
 
 This little project can be configured to read a directory of Markdown files, convert them to HTML, copy over any images into an assets folder, and then deploy the site to an S3 bucket. (Right now, only the parsing part works, and not completely)
 
