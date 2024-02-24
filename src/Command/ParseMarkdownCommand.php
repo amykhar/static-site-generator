@@ -39,6 +39,7 @@ class ParseMarkdownCommand extends Command
         $markdownFiles = $this->fileManagerService->getMarkdownFiles($this->markdownDirectory);
         foreach ($markdownFiles as $file) {
             $this->currentFileName = $file;
+            $io->success('Parsing ' . $file . '...');
             $slug = str_replace('-md', '', $this->slugifyService->slugify($file));
             $fileContents = $this->fileManagerService->openFile($this->markdownDirectory . $file);
             $markdown = $this->parseMetadata($fileContents);
