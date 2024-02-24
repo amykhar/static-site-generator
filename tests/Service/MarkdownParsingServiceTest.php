@@ -241,10 +241,10 @@ class MarkdownParsingServiceTest extends KernelTestCase
 
     public function testParseNewThought(): void
     {
-        $markdown = '--New Thought--';
+        $markdown = '--I am-- in the process';
         $expected = '<section>' . PHP_EOL;
         $expected .= '<p>' . PHP_EOL;
-        $expected .= '<span class="newthought">New Thought</span>' . PHP_EOL;
+        $expected .= '<span class="newthought">I am</span> in the process' . PHP_EOL;
         $expected .= '</p>' . PHP_EOL;
         $expected .= '</section>' . PHP_EOL;
         $this->assertEquals(

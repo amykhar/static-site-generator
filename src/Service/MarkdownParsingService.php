@@ -145,7 +145,7 @@ class MarkdownParsingService
             '/^>\[!sidenote]/' => fn($matches) => $this->parseSideNotes($matches),
             '/>\s+(.+)/' => fn($matches) => $this->parseSideNotes($matches),
             '/!\[\[(.+?)\]\]/' => fn($matches) => $this->parseImages($matches),
-            '/^--(.+?)--$/' => fn($matches) => $this->parseNewThought($matches),
+            '/^--(.+?)--\s(.+)/' => fn($matches) => $this->parseNewThought($matches),
             '/^>\[!quote]/' => fn($matches) => $this->parseQuotes($matches),
             '/^```/' => fn() => $this->parseCodeBlock(),
         ];
@@ -313,7 +313,11 @@ class MarkdownParsingService
  */
     private function parseNewThought(array $input): string
     {
-        return '<span class="newthought">' . $input[1] . '</span>';
+        $output = '<span class="newthought">' . $input[1] . '</span> ';
+        if (isset($input[2])) {
+            $output .= $input[2];
+        }
+        return $output;
     }
 
 /**
