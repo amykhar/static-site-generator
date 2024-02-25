@@ -4,6 +4,7 @@ namespace App\Tests\Command;
 
 use App\Command\ParseMarkdownCommand;
 use App\Exception\MissingMetadataException;
+use App\Service\FeedCreatorService;
 use App\Service\FileManagerService;
 use App\Service\MarkdownParsingService;
 use App\Service\SlugifyService;
@@ -34,7 +35,8 @@ class ParseMarkdownCommandTest extends KernelTestCase
         $assetsInputDirectory = $_ENV['MARKDOWN_ASSETS_DIRECTORY'];
         $markdownParser = $this->prophesize(MarkdownParsingService::class);
         $this->slugifyService = $this->prophesize(SlugifyService::class);
-        $fileManagerService = new FileManagerService();
+        $fileManagerService = new FileManagerService('pretend-output-file.xml');
+        $feedCreatorService = $this->prophesize(FeedCreatorService::class);
 
         $application = new Application();
         $application->add(new ParseMarkdownCommand(
@@ -44,7 +46,8 @@ class ParseMarkdownCommandTest extends KernelTestCase
             $assetsInputDirectory,
             $markdownParser->reveal(),
             $this->slugifyService->reveal(),
-            $fileManagerService
+            $fileManagerService,
+            $feedCreatorService->reveal()
         ));
 
         $command = $application->find('parse-markdown');

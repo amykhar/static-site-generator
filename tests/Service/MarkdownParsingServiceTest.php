@@ -18,7 +18,7 @@ class MarkdownParsingServiceTest extends KernelTestCase
         parent::setUp();
         $this->markdownParsingService = new MarkdownParsingService(
             new SlugifyService(),
-            new FileManagerService()
+            new FileManagerService('bogus.xml')
         );
         $this->assetsInputDirectory = $_ENV['ASSETS_OUTPUT_DIRECTORY'];
         $this->assetsOutputDirectory = $_ENV['ASSETS_OUTPUT_DIRECTORY'];

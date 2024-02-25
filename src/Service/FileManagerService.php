@@ -2,8 +2,12 @@
 
 namespace App\Service;
 
-class FileManagerService
+readonly class FileManagerService
 {
+    public function __construct(private string $feedFile)
+    {
+    }
+
     /**
      * @return array<string>
      */
@@ -40,5 +44,10 @@ class FileManagerService
         }
 
         copy($src, $dest);
+    }
+
+    public function writeFeed(string $feedContent): void
+    {
+        file_put_contents($this->feedFile, $feedContent);
     }
 }
