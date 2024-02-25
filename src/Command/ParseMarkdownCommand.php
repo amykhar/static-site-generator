@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Exception\MissingMetadataException;
+use App\Service\FeedCreatorService;
 use App\Service\FileManagerService;
 use App\Service\MarkdownParsingService;
 use App\Service\SlugifyService;
@@ -28,7 +29,8 @@ class ParseMarkdownCommand extends Command
         private readonly string $assetsInputDirectory,
         private readonly MarkdownParsingService $markdownParser,
         private readonly SlugifyService $slugifyService,
-        private readonly FileManagerService $fileManagerService
+        private readonly FileManagerService $fileManagerService,
+        private readonly FeedCreatorService $feedCreatorService
     ) {
         parent::__construct();
     }
@@ -46,7 +48,15 @@ class ParseMarkdownCommand extends Command
             $html = $this->markdownParser->parse($markdown, $this->assetsInputDirectory, $this->assetsOutputDirectory);
             $output = $this->prepareOutput($html);
             $this->fileManagerService->writeOutput($slug . '.html', $this->htmlDirectory, $output);
+            $this->feedCreatorService->addItem(
+                $this->metadata['title'],
+                $slug . '.html',
+                $output,
+                '2024-02-25T12:00:00+00:00'
+            );
         }
+        $io->success('Writing feed...');
+        $this->feedCreatorService->write();
 
         $io->success('All markdown files have been parsed and saved as html files.');
 

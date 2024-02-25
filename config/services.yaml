@@ -8,6 +8,17 @@ parameters:
     html_output_directory: '%env(HTML_OUTPUT_DIRECTORY)%'
     assets_output_directory: '%env(ASSETS_OUTPUT_DIRECTORY)%'
     markdown_assets_directory: '%env(MARKDOWN_ASSETS_DIRECTORY)%'
+    feed_file: '%env(FEED_FILE)%'
+    feed_channel: '%env(FEED_CHANNEL)%'
+    feed_description: '%env(FEED_DESCRIPTION)%'
+    feed_link: '%env(FEED_LINK)%'
+    feed_language: '%env(FEED_LANGUAGE)%'
+    feed_author: '%env(FEED_AUTHOR)%'
+    feed_author_email: '%env(FEED_AUTHOR_EMAIL)%'
+    feed_image: '%env(FEED_IMAGE)%'
+    feed_social_link: '%env(FEED_SOCIAL_LINK)%'
+    feed_title: '%env(FEED_TITLE)%'
+
 
 services:
     # default configuration for services in *this* file
@@ -32,3 +43,17 @@ services:
             $htmlDirectory: '%html_output_directory%'
             $assetsOutputDirectory: '%assets_output_directory%'
             $assetsInputDirectory: '%markdown_assets_directory%'
+
+    App\Service\FeedCreatorService:
+        arguments:
+            $title: '%feed_title%'
+            $feedLink: '%feed_link%'
+            $description: '%feed_description%'
+            $feedImage: '%feed_link%'
+            $language: '%feed_language%'
+            $author: '%feed_author%'
+            $socialLink: '%feed_social_link%'
+            $contactEmail: '%feed_author_email%'
+    App\Service\FileManagerService:
+        arguments:
+            $feedFile: '%feed_file%'
