@@ -13,8 +13,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'parse-markdown', description: 'Convert markdown to html and save it to a file',)]
-class ParseMarkdownCommand extends Command
+#[AsCommand(name: 'generate-static-site', description: 'Convert markdown to html and generate rss feed',)]
+class GenerateStaticSiteCommand extends Command
 {
     /**
      * @var array<string, string>

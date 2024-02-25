@@ -2,7 +2,7 @@
 
 namespace App\Tests\Command;
 
-use App\Command\ParseMarkdownCommand;
+use App\Command\GenerateStaticSiteCommand;
 use App\Exception\MissingMetadataException;
 use App\Service\FeedCreatorService;
 use App\Service\FileManagerService;
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  * https://www.inanzzz.com/index.php/post/c7jb/testing-symfony-console-command-with-phpunit
  * @group command
  */
-class ParseMarkdownCommandTest extends KernelTestCase
+class GenerateStaticSiteCommandTest extends KernelTestCase
 {
     use ProphecyTrait;
 
@@ -39,7 +39,7 @@ class ParseMarkdownCommandTest extends KernelTestCase
         $feedCreatorService = $this->prophesize(FeedCreatorService::class);
 
         $application = new Application();
-        $application->add(new ParseMarkdownCommand(
+        $application->add(new GenerateStaticSiteCommand(
             $markdownDirectory,
             $htmlDirectory,
             $assetsOutputDirectory,
@@ -50,7 +50,7 @@ class ParseMarkdownCommandTest extends KernelTestCase
             $feedCreatorService->reveal()
         ));
 
-        $command = $application->find('parse-markdown');
+        $command = $application->find('generate-static-site');
         $this->commandTester = new CommandTester($command);
     }
 
